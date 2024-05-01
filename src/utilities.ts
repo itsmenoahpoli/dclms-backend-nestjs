@@ -10,7 +10,8 @@ export const verifyHashedPassword = (rawPassword: string, hashedPassword: string
 
 export const makeArcronyms = (words: string) => {
   return words
-    .replaceAll("Of", "")
+    .toLowerCase()
+    .replaceAll("of", "")
     .split(" ")
     .map((i) => i.charAt(0))
     .join("")

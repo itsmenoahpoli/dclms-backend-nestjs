@@ -2,9 +2,9 @@ import moment from "moment";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma.service";
 import { DocumentNoticesService } from "@/modules/document-notices/document-notices.service";
-import { makeArcronyms } from "@/utilities";
 import { DocumentDTO, SourceDocument } from "./documents.dto";
 import { DocumentNoticeDTO, DocumentNoticeNature } from "@/modules/document-notices/document-notices.dto";
+import { makeArcronyms } from "@/utilities";
 
 @Injectable()
 export class DocumentsService {
@@ -16,18 +16,21 @@ export class DocumentsService {
   private async getSourceDocumentCount(sourceDoc: string) {
     const sourceDocCount = await this.prismaService.document.count({
       where: {
-        sourceDocument: sourceDoc,
+        department: {
+          name: sourceDoc,
+        },
       },
     });
 
     return sourceDocCount;
   }
 
-  private async getSeriesCode(department: string, sourceDoc: string) {
+  private async createSeriesNumber(department: string, sourceDoc: string) {
     /** Format: {sourceDoc-department-0000(fileCount by document sourceDocument type)} (example: FM-SOC-0002) */
     const departmentAcronym = makeArcronyms(department);
+    const seriesNumber = (await this.getSourceDocumentCount(sourceDoc)) + 1;
 
-    return departmentAcronym;
+    return `${sourceDoc}-${departmentAcronym}-${seriesNumber}`;
   }
 
   async getDocuments() {
@@ -49,11 +52,12 @@ export class DocumentsService {
   }
 
   async createDocument(documentData: DocumentDTO) {
-    const seriesNumber = await this.getSeriesCode("school of med", SourceDocument.QM);
+    const seriesNumber = await this.createSeriesNumber("School Of Med", SourceDocument.QM);
 
     const document = await this.prismaService.document.create({
       // @ts-ignore
       data: {
+        seriesNumber,
         ...documentData,
       },
       include: {
