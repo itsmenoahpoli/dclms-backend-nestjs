@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Department {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+  users     User[]
+  documents Document[]
+}
+
+model UserRole {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  abilities String
+  users     User[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model User {
+  id           Int         @id @default(autoincrement())
+  name         String
+  email        String      @unique
+  password     String
+  lastSignin   DateTime?
+  isVerified   Boolean     @default(false)
+  userRoleId   Int?
+  departmentId Int?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  deletedAt    DateTime?
+  userRole     UserRole?   @relation(references: [id], fields: [userRoleId], onDelete: SetNull)
+  documents    Document[]
+  department   Department? @relation(references: [id], fields: [departmentId], onDelete: SetNull)
+}
+
+model Document {
+  id               Int         @id @default(autoincrement())
+  name             String      @unique
+  seriesNumber     String      @unique
+  externalUrl      String      @unique
+  sourceDocument   String
+  status           String      @default("pending")
+  effectivityDate  String?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  deletedAt        DateTime?
+  departmentId     Int?
+  department       Department? @relation(references: [id], fields: [departmentId], onDelete: SetNull)
+  originatorUserId Int
+  originator       User        @relation(references: [id], fields: [originatorUserId], onDelete: Cascade)
+}
+
+model DocumentNotice {
+  id             Int       @id @default(autoincrement())
+  revisionNumber Int
+  details        String
+  nature         String
+  approvalDate   String
+  requestedBy    String
+  approvedBy     String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+}
