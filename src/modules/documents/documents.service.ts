@@ -16,9 +16,7 @@ export class DocumentsService {
   private async getSourceDocumentCount(sourceDoc: string) {
     const sourceDocCount = await this.prismaService.document.count({
       where: {
-        department: {
-          name: sourceDoc,
-        },
+        sourceDocument: sourceDoc,
       },
     });
 
