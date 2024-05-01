@@ -1,14 +1,16 @@
-import { Controller, Res, Get, Post, Patch, Delete, Body, HttpStatus, Param } from "@nestjs/common";
+import { Controller, Res, Get, Post, Patch, Delete, Body, HttpStatus, Param, UseGuards } from "@nestjs/common";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
 import { DocumentsService } from "./documents.service";
 import { DocumentDTO } from "./documents.dto";
+import { AuthGuard } from "@/guards";
 
 @ApiTags("Documents API")
 @Controller({
   path: "documents",
   version: "1",
 })
+@UseGuards(AuthGuard)
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
