@@ -1,6 +1,6 @@
-import { Controller, Res, Post, Body, HttpStatus } from "@nestjs/common";
+import { Controller, Req, Res, Post, Body, HttpStatus } from "@nestjs/common";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import type { CredentialsDTO } from "./auth.dto";
 
@@ -21,8 +21,8 @@ export class AuthController {
     description: "Credentials (email, password) that were provided was invalid",
   })
   @Post("/login")
-  async loginHandler(@Body() credentialsDTO: CredentialsDTO, @Res() response: Response) {
-    const data = await this.authService.authenticateCredentials(credentialsDTO);
+  async loginHandler(@Req() request: Request, @Res() response: Response) {
+    const data = await this.authService.authenticateCredentials(request.body as CredentialsDTO);
 
     if (!data) {
       return response.status(HttpStatus.UNAUTHORIZED).json(data);

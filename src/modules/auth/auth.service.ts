@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { PrismaService } from "@/prisma.service";
@@ -18,9 +19,6 @@ export class AuthService {
       where: {
         email,
       },
-      include: {
-        userRole: true,
-      },
     });
 
     if (!user || verifyHashedPassword(user.password, password)) {
@@ -29,7 +27,18 @@ export class AuthService {
       };
     }
 
-    delete user.password;
+    const lastSignin = moment().format("MMMM Do YYYY, h:mm:ss a").toString();
+
+    const updateUser = await this.prismaService.user.update({
+      where: { email },
+      data: { lastSignin },
+      include: {
+        userRole: true,
+        department: true,
+      },
+    });
+
+    delete updateUser.password;
 
     const payload = { sub: user.id, data: user };
     const accessToken = await this.jwtService.signAsync(payload);
@@ -37,7 +46,7 @@ export class AuthService {
     return {
       message: "AUTHENTICATED",
       accessToken,
-      user,
+      user: updateUser,
     };
   }
 }
