@@ -72,9 +72,9 @@ model DocumentNotice {
   revisionNumber Int
   details        String
   nature         String
-  approvalDate   String
+  approvalDate   String?
   requestedBy    String
-  approvedBy     String
+  approvedBy     String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime?

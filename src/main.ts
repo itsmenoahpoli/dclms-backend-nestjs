@@ -61,7 +61,7 @@ async function bootstrap() {
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
 
-  SwaggerModule.setup("docs/api", app, swaggerDocument);
+  SwaggerModule.setup("docs/api", app, swaggerDocument, {customSiteTitle: "OIE Swagger API Documentation"});
 
   await app.listen(port);
 }

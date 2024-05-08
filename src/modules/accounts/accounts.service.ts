@@ -18,6 +18,9 @@ export class AccountsService {
       include: {
         userRole: true,
       },
+      orderBy: {
+        id: 'desc'
+      }
     });
 
     return accounts;

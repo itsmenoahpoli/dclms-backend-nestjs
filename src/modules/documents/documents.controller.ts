@@ -10,7 +10,7 @@ import { AuthGuard } from "@/guards";
   path: "documents",
   version: "1",
 })
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 

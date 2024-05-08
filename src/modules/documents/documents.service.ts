@@ -1,16 +1,18 @@
-import moment from "moment";
+import * as moment from "moment";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma.service";
 import { DocumentNoticesService } from "@/modules/document-notices/document-notices.service";
 import { DocumentDTO, SourceDocument } from "./documents.dto";
 import { DocumentNoticeDTO, DocumentNoticeNature } from "@/modules/document-notices/document-notices.dto";
+import { DepartmentsService } from "@/modules/departments/departments.service";
 import { makeArcronyms } from "@/utilities";
 
 @Injectable()
 export class DocumentsService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly documentNoticesService: DocumentNoticesService
+    private readonly documentNoticesService: DocumentNoticesService,
+    private readonly departmentsService: DepartmentsService
   ) {}
 
   private async getSourceDocumentCount(sourceDoc: string) {
@@ -50,7 +52,8 @@ export class DocumentsService {
   }
 
   async createDocument(documentData: DocumentDTO) {
-    const seriesNumber = await this.createSeriesNumber("School Of Med", SourceDocument.QM);
+    const department = await this.departmentsService.getDepartment(documentData.departmentId);
+    const seriesNumber = await this.createSeriesNumber(department.name, documentData.sourceDocument);
 
     const document = await this.prismaService.document.create({
       // @ts-ignore
@@ -66,6 +69,7 @@ export class DocumentsService {
     const documentNotice = await this.documentNoticesService.createDocumentNotice({
       details: `Document was created this date: ${moment().format("MMMM Do YYYY, h:mm:ss a")}`,
       nature: DocumentNoticeNature.CREATION,
+      requestedBy: department.name,
     } as DocumentNoticeDTO);
 
     return { document, documentNotice };

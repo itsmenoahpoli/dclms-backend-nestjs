@@ -6,6 +6,7 @@ import { PrismaService } from "@/prisma.service";
 import { AppController } from "@/app/app.controller";
 import { AppService } from "@/app/app.service";
 import { AuthModule } from "@/modules/auth/auth.module";
+import { DepartmentsModule } from "@/modules/departments/departments.module";
 import { UserRolesModule } from "@/modules/user-roles/user-roles.module";
 import { AccountsModule } from "@/modules/accounts/accounts.module";
 import { DocumentsModule } from "@/modules/documents/documents.module";
@@ -21,6 +22,7 @@ import { DocumentsModule } from "@/modules/documents/documents.module";
       },
     }),
     AuthModule,
+    DepartmentsModule,
     UserRolesModule,
     AccountsModule,
     DocumentsModule,
