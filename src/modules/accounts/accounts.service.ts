@@ -52,6 +52,16 @@ export class AccountsService {
     return account;
   }
 
+  async deleteAccount(id: number) {
+    const account = await this.prismaService.user.delete({
+      where: {
+        id,
+      },
+    });
+
+    return account;
+  }
+
   async createAccount(accountData: AccountDTO) {
     if (await this.checkEmailExistence(accountData.email)) {
       return {

@@ -35,14 +35,25 @@ export class AccountsController {
   }
 
   @ApiResponse({
-    status: 200,
-    description: "Update account by id",
+    status: 204,
+    description: "Delete account by id",
   })
   @Patch("/:id")
-  async updateAccountHandler(@Param() id: number, @Body() accountDTO: AccountDTO, @Res() response: Response) {
+  async updateAccountHandler(@Param("id") id: number, @Body() accountDTO: AccountDTO, @Res() response: Response) {
     const data = await this.accountsService.updateAccount(id, accountDTO);
 
     return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
+    status: 204,
+    description: "Update account by id",
+  })
+  @Delete("/:id")
+  async deleteAccountHandler(@Param("id") id: number, @Res() response: Response) {
+    const data = await this.accountsService.deleteAccount(id);
+
+    return response.status(HttpStatus.NO_CONTENT).json(data);
   }
 
   @ApiResponse({

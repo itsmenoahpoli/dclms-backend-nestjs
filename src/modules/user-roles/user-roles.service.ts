@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@/prisma.service';
-import { UserRole } from './user-roles.dto';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "@/prisma.service";
+import { UserRole } from "./user-roles.dto";
 
 @Injectable()
 export class UserRolesService {
@@ -35,7 +35,9 @@ export class UserRolesService {
 
   async deleteRole(id: number) {
     const role = await this.prismaService.userRole.delete({
-      where: { id },
+      where: {
+        id,
+      },
     });
 
     return role;
