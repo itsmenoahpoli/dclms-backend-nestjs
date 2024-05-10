@@ -19,8 +19,8 @@ export class AccountsService {
         userRole: true,
       },
       orderBy: {
-        id: 'desc'
-      }
+        id: "desc",
+      },
     });
 
     return accounts;
@@ -72,9 +72,12 @@ export class AccountsService {
       };
     }
 
+    const username = "";
+
     const account = await this.prismaService.user.create({
       data: {
         ...accountData,
+        username,
         password: hashPassword(accountData.password),
       },
       include: {

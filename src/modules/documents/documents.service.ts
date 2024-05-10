@@ -62,6 +62,7 @@ export class DocumentsService {
         ...documentData,
       },
       include: {
+        department: true,
         originator: true,
       },
     });
