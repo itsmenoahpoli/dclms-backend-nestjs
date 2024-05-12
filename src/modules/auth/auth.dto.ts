@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsNotEmpty } from "class-validator";
 
 export type Credentials = {
-  email: string;
+  username: string;
   password: string;
 };
 
@@ -10,7 +10,7 @@ export class CredentialsDTO implements Credentials {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  email: string;
+  username: string;
 
   @ApiProperty()
   @IsNotEmpty()

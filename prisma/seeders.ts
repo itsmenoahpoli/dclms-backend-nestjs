@@ -1,7 +1,18 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Department } from "@prisma/client";
 import { hashPassword } from "./../src/utilities";
 
 const prisma = new PrismaClient();
+
+const makeArcronyms = (words: string) => {
+  return words
+    .toLowerCase()
+    .replaceAll("of", "")
+    .replaceAll("and", "")
+    .split(" ")
+    .map((i) => i.charAt(0))
+    .join("")
+    .toLowerCase();
+};
 
 async function seed() {
   const userRoles = ["superadmin", "originator-per-document", "document-controller", "quality-management-representative"];
@@ -27,10 +38,11 @@ async function seed() {
   });
 
   await prisma.user.createMany({
-    data: userRoles.map((user) => ({
-      name: `${user} Account`,
-      email: `${user}@domain.com`,
-      password: hashPassword(`${user}account$$2024`),
+    data: departments.map((department: any) => ({
+      name: `${department.replaceAll(" ", "").toLowerCase()} Account`,
+      email: `${department}@domain.com`,
+      username: `${makeArcronyms(department)}-williams-2024`,
+      password: hashPassword(`${makeArcronyms(department)}account$$2024`),
       isVerified: true,
       departmentId: 1,
     })),

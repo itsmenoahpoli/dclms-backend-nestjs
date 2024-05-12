@@ -13,11 +13,11 @@ export class AuthService {
   ) {}
 
   async authenticateCredentials(credentials: CredentialsDTO) {
-    const { email, password } = credentials;
+    const { username, password } = credentials;
 
     const user = await this.prismaService.user.findUnique({
       where: {
-        email,
+        username,
       },
     });
 
@@ -30,7 +30,7 @@ export class AuthService {
     const lastSignin = moment().format("MMMM Do YYYY, h:mm:ss a").toString();
 
     const updateUser = await this.prismaService.user.update({
-      where: { email },
+      where: { username },
       data: { lastSignin },
       include: {
         userRole: true,

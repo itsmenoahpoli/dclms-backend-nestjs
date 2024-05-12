@@ -1,5 +1,5 @@
 import { Controller, Req, Res, Post, Body, HttpStatus } from "@nestjs/common";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiResponse, ApiTags, ApiProperty } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import type { CredentialsDTO } from "./auth.dto";
@@ -19,6 +19,14 @@ export class AuthController {
   @ApiResponse({
     status: 401,
     description: "Credentials (email, password) that were provided was invalid",
+  })
+  @ApiProperty({
+    type: String,
+    name: "username",
+  })
+  @ApiProperty({
+    type: String,
+    name: "password",
   })
   @Post("/login")
   async loginHandler(@Req() request: Request, @Res() response: Response) {
