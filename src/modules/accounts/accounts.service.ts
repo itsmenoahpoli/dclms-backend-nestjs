@@ -72,12 +72,9 @@ export class AccountsService {
       };
     }
 
-    const username = "";
-
     const account = await this.prismaService.user.create({
       data: {
         ...accountData,
-        username,
         password: hashPassword(accountData.password),
       },
       include: {

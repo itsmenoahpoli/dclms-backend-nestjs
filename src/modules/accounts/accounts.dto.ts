@@ -11,6 +11,11 @@ export class AccountDTO implements Partial<User> {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  username: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   email: string;
 
   @ApiProperty()
