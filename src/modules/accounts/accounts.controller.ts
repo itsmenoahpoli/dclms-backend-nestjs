@@ -51,7 +51,7 @@ export class AccountsController {
   })
   @Delete("/:id")
   async deleteAccountHandler(@Param("id") id: number, @Res() response: Response) {
-    const data = await this.accountsService.deleteAccount(id);
+    const data = await this.accountsService.deleteAccount(+id);
 
     return response.status(HttpStatus.NO_CONTENT).json(data);
   }
