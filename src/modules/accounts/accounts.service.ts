@@ -16,6 +16,7 @@ export class AccountsService {
   async getAccounts() {
     const accounts = await this.prismaService.user.findMany({
       include: {
+        department: true,
         userRole: true,
       },
       orderBy: {
