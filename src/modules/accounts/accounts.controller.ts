@@ -60,14 +60,18 @@ export class AccountsController {
     status: 201,
     description: "Successfully created user account",
   })
+  @ApiResponse({
+    status: 400,
+    description: "Email may have already been used | Form data is incorrect",
+  })
   @Post("/")
   async createAccountHandler(@Body() accountDTO: AccountDTO, @Res() response: Response) {
     const data = await this.accountsService.createAccount(accountDTO);
 
-    if (data.message === "EMAIL_ALREADY_USED") {
+    if (data.message === "EMAIL_USED_ALREADY") {
       return response.status(HttpStatus.BAD_REQUEST).json(data);
     }
 
-    return response.status(HttpStatus.CREATED).json(data);
+    return response.status(HttpStatus.BAD_REQUEST).json(data);
   }
 }

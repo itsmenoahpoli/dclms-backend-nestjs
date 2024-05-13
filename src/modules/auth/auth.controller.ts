@@ -1,8 +1,8 @@
 import { Controller, Req, Res, Post, Body, HttpStatus } from "@nestjs/common";
-import { ApiResponse, ApiTags, ApiProperty, ApiExtraModels } from "@nestjs/swagger";
+import { ApiResponse, ApiTags, ApiProperty } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
-import { CredentialsDTO } from "./auth.dto";
+import type { CredentialsDTO } from "./auth.dto";
 
 @ApiTags("Auth API")
 @Controller({
@@ -12,7 +12,6 @@ import { CredentialsDTO } from "./auth.dto";
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiExtraModels(CredentialsDTO)
   @ApiResponse({
     status: 200,
     description: "Successfully authenticated user credentials (email, password)",
@@ -22,7 +21,7 @@ export class AuthController {
     description: "Credentials (email, password) that were provided was invalid",
   })
   @Post("/login")
-  async loginHandler(@Req() request: Request, @Res() response: Response) {
+  async loginHandler(@Body() credentialsDTO: CredentialsDTO, @Req() request: Request, @Res() response: Response) {
     const data = await this.authService.authenticateCredentials(request.body as CredentialsDTO);
 
     if (!data) {
