@@ -27,7 +27,7 @@ export class DepartmentsController {
     status: 200,
     description: "Get department by id",
   })
-  @Post("/:id")
+  @Get("/:id")
   async getDepartmentHandler(@Param() id: number, @Res() response: Response) {
     const data = await this.departmentsService.getDepartment(id);
 

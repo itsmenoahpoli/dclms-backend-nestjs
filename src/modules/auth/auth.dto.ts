@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsNotEmpty } from "class-validator";
 
-export type Credentials = {
+export interface Credentials {
   username: string;
   password: string;
-};
+}
 
 export class CredentialsDTO implements Credentials {
   @ApiProperty()
