@@ -9,7 +9,7 @@ import { AppService } from "./app.service";
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get("/healtcheck")
+  @Get("/healthcheck")
   getHello(@Res() response: Response) {
     return response.status(HttpStatus.OK).json({ message: "UP_AND_RUNNING" });
   }
