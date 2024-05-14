@@ -42,7 +42,7 @@ async function seed() {
       name: `${department.replaceAll(" ", "").toLowerCase()} Account`,
       email: `${department}@domain.com`,
       username: `${makeArcronyms(department)}-williams-2024`,
-      password: hashPassword(`${makeArcronyms(department)}account$$2024`),
+      password: hashPassword(`defaultpassword`),
       isVerified: true,
       departmentId: 1,
     })),
