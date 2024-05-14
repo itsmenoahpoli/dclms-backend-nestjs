@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNumber, IsNotEmpty } from "class-validator";
+import { IsString, IsNumber, IsNotEmpty, IsOptional } from "class-validator";
 import { User } from "@prisma/client";
 
 export class AccountDTO implements Partial<User> {
@@ -19,7 +19,7 @@ export class AccountDTO implements Partial<User> {
   email: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   password: string;
 
