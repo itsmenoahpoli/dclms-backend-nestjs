@@ -31,21 +31,22 @@ export class DocumentsService {
     }
   }
 
-  private async getSourceDocumentCount(sourceDoc: string) {
+  private async getSourceDocumentCount(sourceDoc: string, departmentId: number) {
     const sourceDocCount = await this.prismaService.document.count({
       where: {
         sourceDocument: sourceDoc,
+        departmentId,
       },
     });
 
     return sourceDocCount;
   }
 
-  private async createSeriesNumber(department: string, sourceDoc: string) {
+  private async createSeriesNumber(departmentId: number, department: string, sourceDoc: string) {
     /** Format: {sourceDoc-department-0000(fileCount by document sourceDocument type)} (example: FM-SOC-0002) */
     const departmentAcronym = makeAcronyms(department);
     const sourceDocAcronym = makeAcronyms(sourceDoc);
-    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(sourceDoc)) + 1);
+    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(sourceDoc, departmentId)) + 1);
 
     return `${sourceDocAcronym}-${departmentAcronym}-${seriesNumber}`;
   }
@@ -112,7 +113,7 @@ export class DocumentsService {
     }
 
     const department = await this.departmentsService.getDepartment(documentData.departmentId);
-    const seriesNumber = await this.createSeriesNumber(department.name, documentData.sourceDocument);
+    const seriesNumber = await this.createSeriesNumber(documentData.departmentId, department.name, documentData.sourceDocument);
 
     const document = await this.prismaService.document.create({
       // @ts-ignore
