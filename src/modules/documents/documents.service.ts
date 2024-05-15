@@ -66,6 +66,23 @@ export class DocumentsService {
     return documents;
   }
 
+  async getDocumentsByDepartment(departmentId: number) {
+    const documents = await this.prismaService.document.findMany({
+      where: {
+        departmentId,
+      },
+      orderBy: {
+        id: "desc",
+      },
+      include: {
+        originator: true,
+        department: true,
+      },
+    });
+
+    return documents;
+  }
+
   async getDocument(id: number) {
     const document = await this.prismaService.document.findUnique({
       where: { id },

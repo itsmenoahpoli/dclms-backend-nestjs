@@ -27,11 +27,22 @@ export class DocumentsController {
 
   @ApiResponse({
     status: 200,
+    description: "List of documents",
+  })
+  @Get("/department/:departmentId")
+  async getDocumentsByDepartmentHandler(@Param("departmentId") departmentId: number, @Res() response: Response) {
+    const data = await this.documentsService.getDocumentsByDepartment(+departmentId);
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
+    status: 200,
     description: "Get document by id",
   })
   @Get("/")
   async getDocumentHandler(@Param() id: number, @Res() response: Response) {
-    const data = await this.documentsService.getDocument(id);
+    const data = await this.documentsService.getDocument(+id);
 
     if (!data) {
       return response.status(HttpStatus.NOT_FOUND).json(data);
