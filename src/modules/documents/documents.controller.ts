@@ -59,6 +59,10 @@ export class DocumentsController {
   async createDocumentsHandler(@Body() documentDTO: DocumentDTO, @Res() response: Response) {
     const data = await this.documentsService.createDocument(documentDTO);
 
+    if (data.error) {
+      return response.status(HttpStatus.BAD_REQUEST).json(data);
+    }
+
     return response.status(HttpStatus.OK).json(data);
   }
 }

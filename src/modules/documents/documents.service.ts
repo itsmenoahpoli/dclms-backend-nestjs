@@ -47,8 +47,6 @@ export class DocumentsService {
     const sourceDocAcronym = makeAcronyms(sourceDoc);
     const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(sourceDoc)) + 1);
 
-    console.log(seriesNumber);
-
     return `${sourceDocAcronym}-${departmentAcronym}-${seriesNumber}`;
   }
 
@@ -92,6 +90,21 @@ export class DocumentsService {
   }
 
   async createDocument(documentData: DocumentDTO) {
+    const checkDocumentName = await this.prismaService.document.findUnique({
+      where: {
+        name: documentData.name,
+      },
+    });
+
+    if (checkDocumentName) {
+      return {
+        error: true,
+        message: "DOCUMENT_NAME_ALREADY_USED",
+        document: null,
+        department: null,
+      };
+    }
+
     const department = await this.departmentsService.getDepartment(documentData.departmentId);
     const seriesNumber = await this.createSeriesNumber(department.name, documentData.sourceDocument);
 
