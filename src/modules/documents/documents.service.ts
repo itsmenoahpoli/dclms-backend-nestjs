@@ -16,19 +16,19 @@ export class DocumentsService {
   ) {}
 
   private formatSeriesCount(value: number) {
-    if (value < 1000 && value > 100) {
-      return Number.parseInt(`0${value}`);
+    console.log("formatSeriesCount", value);
+    if (value < 10) {
+      console.log("value < 10");
+      return `000${value}`;
     }
 
     if (value < 100 && value > 10) {
-      return Number.parseInt(`00${value}`);
+      return `00${value}`;
     }
 
-    if (value < 10) {
-      return Number.parseInt(`000${value}`);
+    if (value < 1000 && value > 100) {
+      return `0${value}`;
     }
-
-    return value;
   }
 
   private async getSourceDocumentCount(sourceDoc: string) {
@@ -47,11 +47,16 @@ export class DocumentsService {
     const sourceDocAcronym = makeAcronyms(sourceDoc);
     const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(sourceDoc)) + 1);
 
+    console.log(seriesNumber);
+
     return `${sourceDocAcronym}-${departmentAcronym}-${seriesNumber}`;
   }
 
   async getDocuments() {
     const documents = await this.prismaService.document.findMany({
+      orderBy: {
+        id: "desc",
+      },
       include: {
         originator: true,
         department: true,
