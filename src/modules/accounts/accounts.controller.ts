@@ -40,7 +40,7 @@ export class AccountsController {
   })
   @Patch("/:id")
   async updateAccountHandler(@Param("id") id: number, @Body() accountDTO: AccountDTO, @Res() response: Response) {
-    const data = await this.accountsService.updateAccount(id, accountDTO);
+    const data = await this.accountsService.updateAccount(+id, accountDTO);
 
     return response.status(HttpStatus.OK).json(data);
   }
