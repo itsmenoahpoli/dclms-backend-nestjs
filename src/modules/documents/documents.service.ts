@@ -96,10 +96,16 @@ export class DocumentsService {
       },
     });
 
-    if (checkDocumentName) {
+    const checkDocumentUrl = await this.prismaService.document.findUnique({
+      where: {
+        externalUrl: documentData.externalUrl,
+      },
+    });
+
+    if (checkDocumentName || checkDocumentUrl) {
       return {
-        error: true,
-        message: "DOCUMENT_NAME_ALREADY_USED",
+        hasValidationError: true,
+        message: "DOCUMENT_NAME_OR_URL_ALREADY_USED",
         document: null,
         department: null,
       };
