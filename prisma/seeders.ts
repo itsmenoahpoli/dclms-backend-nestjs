@@ -3,7 +3,7 @@ import { hashPassword } from "./../src/utilities";
 
 const prisma = new PrismaClient();
 
-const makeArcronyms = (words: string) => {
+const makeAcronyms = (words: string) => {
   return words
     .toLowerCase()
     .replaceAll("of", "")
@@ -47,7 +47,7 @@ async function populateDatabase() {
     data: departments.map((department: any) => ({
       name: `${department.replaceAll(" ", "").toLowerCase()} Account`,
       email: `${department}@domain.com`,
-      username: `${makeArcronyms(department)}-user-2024`,
+      username: `${makeAcronyms(department)}-user-2024`,
       password: hashPassword(`defaultpassword`),
       isVerified: true,
       departmentId: department.id,

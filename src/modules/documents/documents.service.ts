@@ -5,7 +5,7 @@ import { DocumentNoticesService } from "@/modules/document-notices/document-noti
 import { DocumentDTO, SourceDocument } from "./documents.dto";
 import { DocumentNoticeDTO, DocumentNoticeNature } from "@/modules/document-notices/document-notices.dto";
 import { DepartmentsService } from "@/modules/departments/departments.service";
-import { makeArcronyms } from "@/utilities";
+import { makeAcronyms } from "@/utilities";
 
 @Injectable()
 export class DocumentsService {
@@ -14,6 +14,22 @@ export class DocumentsService {
     private readonly documentNoticesService: DocumentNoticesService,
     private readonly departmentsService: DepartmentsService
   ) {}
+
+  private formatSeriesCount(value: number) {
+    if (value < 1000 && value > 100) {
+      return Number.parseInt(`0${value}`);
+    }
+
+    if (value < 100 && value > 10) {
+      return Number.parseInt(`00${value}`);
+    }
+
+    if (value < 10) {
+      return Number.parseInt(`000${value}`);
+    }
+
+    return value;
+  }
 
   private async getSourceDocumentCount(sourceDoc: string) {
     const sourceDocCount = await this.prismaService.document.count({
@@ -27,16 +43,18 @@ export class DocumentsService {
 
   private async createSeriesNumber(department: string, sourceDoc: string) {
     /** Format: {sourceDoc-department-0000(fileCount by document sourceDocument type)} (example: FM-SOC-0002) */
-    const departmentAcronym = makeArcronyms(department);
-    const seriesNumber = (await this.getSourceDocumentCount(sourceDoc)) + 1;
+    const departmentAcronym = makeAcronyms(department);
+    const sourceDocAcronym = makeAcronyms(sourceDoc);
+    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(sourceDoc)) + 1);
 
-    return `${sourceDoc}-${departmentAcronym}-${seriesNumber}`;
+    return `${sourceDocAcronym}-${departmentAcronym}-${seriesNumber}`;
   }
 
   async getDocuments() {
     const documents = await this.prismaService.document.findMany({
       include: {
         originator: true,
+        department: true,
       },
     });
 

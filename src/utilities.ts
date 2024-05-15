@@ -8,7 +8,7 @@ export const verifyHashedPassword = (rawPassword: string, hashedPassword: string
   return bcrypt.compareSync(rawPassword, hashedPassword);
 };
 
-export const makeArcronyms = (words: string) => {
+export const makeAcronyms = (words: string) => {
   return words
     .toLowerCase()
     .replaceAll("of", "")
