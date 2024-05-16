@@ -29,7 +29,7 @@ export class AccountDTO implements Partial<User> {
   userRoleId: number;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   departmentId: number;
 }

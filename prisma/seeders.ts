@@ -23,26 +23,22 @@ async function populateDatabase() {
   //   "School of Arts and Sciences",
   //   "School of College",
   // ];
-
   // await prisma.department.createMany({
   //   data: departments.map((department) => ({
   //     name: department,
   //   })),
   // });
-
   // await prisma.userRole.createMany({
   //   data: userRoles.map((role) => ({
   //     name: role,
   //     abilities: JSON.stringify(["*"]),
   //   })),
   // });
-
   // const originatorPerDocument = await prisma.userRole.findUnique({
   //   where: {
   //     name: userRoles[1],
   //   },
   // });
-
   // await prisma.user.createMany({
   //   data: departments.map((department: any) => ({
   //     name: `${department.replaceAll(" ", "").toLowerCase()} Account`,
@@ -54,19 +50,16 @@ async function populateDatabase() {
   //     userRoleId: originatorPerDocument.id,
   //   })),
   // });
-
   // const documentControllerRole = await prisma.userRole.findUnique({
   //   where: {
   //     name: userRoles[2],
   //   },
   // });
-
   // const qualityManagementRepresetativeRole = await prisma.userRole.findUnique({
   //   where: {
   //     name: userRoles[3],
   //   },
   // });
-
   // await prisma.user.createMany({
   //   data: [
   //     {
@@ -89,13 +82,11 @@ async function populateDatabase() {
   //     },
   //   ],
   // });
-
   // const superadminRole = await prisma.userRole.findUnique({
   //   where: {
   //     name: userRoles[0],
   //   },
   // });
-
   // await prisma.user.create({
   //   data: {
   //     name: `Superadmin Account`,
@@ -107,30 +98,35 @@ async function populateDatabase() {
   //     userRoleId: superadminRole.id,
   //   },
   // });
-
-  await prisma.user.update({
-    where: {
-      id: 8,
-    },
-    data: {
-      password: hashPassword("defaultaccount"),
-    },
-  });
+  // await prisma.user.update({
+  //   where: {
+  //     id: 8,
+  //   },
+  //   data: {
+  //     password: hashPassword("defaultaccount"),
+  //   },
+  // });
 }
 
 async function clearDatabase() {
-  ["superadmin", "originator-per-document", "document-controller", "quality-management-representative"].forEach(async (role) => {
-    await prisma.userRole.delete({ where: { name: role } });
+  // ["superadmin", "originator-per-document", "document-controller", "quality-management-representative"].forEach(async (role) => {
+  //   await prisma.userRole.delete({ where: { name: role } });
+  // });
+  const users = await prisma.user.findMany({
+    where: {
+      userRoleId: {
+        not: 1,
+      },
+    },
   });
-  const users = await prisma.user.findMany();
   users.forEach(async (user) => await prisma.user.delete({ where: { id: user.id } }));
-  const departments = await prisma.department.findMany();
-  departments.forEach(async (department) => await prisma.department.delete({ where: { id: department.id } }));
+  // const departments = await prisma.department.findMany();
+  // departments.forEach(async (department) => await prisma.department.delete({ where: { id: department.id } }));
 }
 
 async function seed() {
-  populateDatabase();
-  // clearDatabase();
+  // populateDatabase();
+  clearDatabase();
 }
 
 seed().finally(() => prisma.$disconnect());
