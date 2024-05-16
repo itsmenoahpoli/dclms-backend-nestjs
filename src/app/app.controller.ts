@@ -10,7 +10,14 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get("/healthcheck")
-  getHello(@Res() response: Response) {
+  systemHealthcheckHandler(@Res() response: Response) {
     return response.status(HttpStatus.OK).json({ message: "UP_AND_RUNNING" });
+  }
+
+  @Get("/dashboard-stats")
+  async getDashboardStatisticsHandler(@Res() response: Response) {
+    const data = await this.appService.getDashboardStatistics();
+
+    return response.status(HttpStatus.OK).json(data);
   }
 }

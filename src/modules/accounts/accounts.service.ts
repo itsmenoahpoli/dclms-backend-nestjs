@@ -83,6 +83,10 @@ export class AccountsService {
       };
     }
 
+    if (!accountData.departmentId) {
+      accountData.departmentId = null;
+    }
+
     const account = await this.prismaService.user.create({
       data: {
         ...accountData,
