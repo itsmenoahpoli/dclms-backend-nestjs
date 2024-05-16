@@ -56,6 +56,7 @@ export class AccountsService {
       },
       data: {
         ...accountData,
+        username: accountData.username.toLowerCase(),
       },
       include: {
         userRole: true,
@@ -85,6 +86,7 @@ export class AccountsService {
     const account = await this.prismaService.user.create({
       data: {
         ...accountData,
+        username: accountData.username.toLowerCase(),
         password: hashPassword(accountData.password),
       },
       include: {
