@@ -15,11 +15,6 @@ export class AccountsService {
 
   async getAccounts() {
     const accounts = await this.prismaService.user.findMany({
-      where: {
-        userRoleId: {
-          not: 1,
-        },
-      },
       include: {
         department: true,
         userRole: true,
@@ -46,6 +41,10 @@ export class AccountsService {
   }
 
   async updateAccount(id: number, accountData: AccountDTO) {
+    if (!accountData.departmentId) {
+      accountData.departmentId = null;
+    }
+
     const account = await this.prismaService.user.update({
       where: {
         id,
