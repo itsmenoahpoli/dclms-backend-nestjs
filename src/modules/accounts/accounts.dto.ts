@@ -27,4 +27,9 @@ export class AccountDTO implements Partial<User> {
   @IsNotEmpty()
   @IsNumber()
   userRoleId: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  departmentId: number;
 }
