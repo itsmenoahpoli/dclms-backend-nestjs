@@ -21,8 +21,6 @@ export class AuthService {
       },
     });
 
-    console.log("verifyHashedPassword", verifyHashedPassword(password, user.password));
-
     if (!user || !verifyHashedPassword(password, user.password)) {
       return {
         message: "INVALID_ACCOUNT",
