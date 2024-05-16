@@ -1,5 +1,5 @@
 import { Controller, Req, Res, Post, Body, HttpStatus } from "@nestjs/common";
-import { ApiResponse, ApiTags, ApiProperty } from "@nestjs/swagger";
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import type { CredentialsDTO } from "./auth.dto";
@@ -24,7 +24,7 @@ export class AuthController {
   async loginHandler(@Body() credentialsDTO: CredentialsDTO, @Req() request: Request, @Res() response: Response) {
     const data = await this.authService.authenticateCredentials(request.body as CredentialsDTO);
 
-    if (!data) {
+    if (data.message === "INVALID_ACCOUNT") {
       return response.status(HttpStatus.UNAUTHORIZED).json(data);
     }
 
