@@ -52,6 +52,7 @@ export class AccountsService {
       },
       data: {
         ...accountData,
+        password: hashPassword(accountData.password),
       },
       include: {
         userRole: true,
