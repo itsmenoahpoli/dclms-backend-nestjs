@@ -112,21 +112,19 @@ async function clearDatabase() {
   // ["superadmin", "originator-per-document", "document-controller", "quality-management-representative"].forEach(async (role) => {
   //   await prisma.userRole.delete({ where: { name: role } });
   // });
-  // const users = await prisma.user.findMany({
-  //   where: {
-  //     userRoleId: {
-  //       not: 1,
-  //     },
-  //   },
-  // });
-  // users.forEach(async (user) => await prisma.user.delete({ where: { id: user.id } }));
+  const users = await prisma.user.findMany({
+    where: {
+      id: 8,
+    },
+  });
+  users.forEach(async (user) => await prisma.user.update({ where: { id: user.id }, data: { password: hashPassword("defaultpassword") } }));
   // const departments = await prisma.department.findMany();
   // departments.forEach(async (department) => await prisma.department.delete({ where: { id: department.id } }));
 }
 
 async function seed() {
   // populateDatabase();
-  // clearDatabase();
+  clearDatabase();
 }
 
 seed().finally(() => prisma.$disconnect());
