@@ -136,8 +136,9 @@ export class DocumentsService {
 
     const documentNotice = await this.documentNoticesService.createDocumentNotice({
       details: `Document was created this date: ${moment().format("MMMM Do YYYY, h:mm:ss a")}`,
-      nature: DocumentNoticeNature.CREATION,
+      nature: DocumentNoticeNature.ADDITION,
       requestedBy: department.name,
+      documentId: document.id,
     } as DocumentNoticeDTO);
 
     return { document, documentNotice };
