@@ -39,5 +39,10 @@ export class DocumentNoticeDTO implements Partial<DocumentNotice> {
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
-  originatorUserId: string;
+  documentId: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  originatorUserId: number;
 }

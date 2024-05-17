@@ -27,7 +27,7 @@ export class DocumentsController {
 
   @ApiResponse({
     status: 200,
-    description: "List of documents",
+    description: "List of documents by department",
   })
   @Get("/department/:departmentId")
   async getDocumentsByDepartmentHandler(@Param("departmentId") departmentId: number, @Res() response: Response) {
@@ -40,8 +40,8 @@ export class DocumentsController {
     status: 200,
     description: "Get document by id",
   })
-  @Get("/")
-  async getDocumentHandler(@Param() id: number, @Res() response: Response) {
+  @Get("/:id")
+  async getDocumentHandler(@Param("id") id: number, @Res() response: Response) {
     const data = await this.documentsService.getDocument(+id);
 
     if (!data) {
