@@ -52,22 +52,23 @@ model User {
 }
 
 model Document {
-  id                                        Int         @id @default(autoincrement())
-  name                                      String      @unique
-  seriesNumber                              String      @unique
-  externalUrl                               String      @unique
+  id                                        Int              @id @default(autoincrement())
+  name                                      String           @unique
+  seriesNumber                              String           @unique
+  externalUrl                               String           @unique
   sourceDocument                            String
-  status                                    String      @default("pending")
+  status                                    String           @default("pending")
   effectivityDate                           String?
-  isDocumentControllerApproved              Boolean     @default(false)
-  isQualityManagementRepresentativeApproved Boolean     @default(false)
-  createdAt                                 DateTime    @default(now())
-  updatedAt                                 DateTime    @updatedAt
+  isDocumentControllerApproved              Boolean          @default(false)
+  isQualityManagementRepresentativeApproved Boolean          @default(false)
+  createdAt                                 DateTime         @default(now())
+  updatedAt                                 DateTime         @updatedAt
   deletedAt                                 DateTime?
   departmentId                              Int?
-  department                                Department? @relation(references: [id], fields: [departmentId], onDelete: SetNull)
+  department                                Department?      @relation(references: [id], fields: [departmentId], onDelete: SetNull)
   originatorUserId                          Int
-  originator                                User        @relation(references: [id], fields: [originatorUserId], onDelete: Cascade)
+  originator                                User             @relation(references: [id], fields: [originatorUserId], onDelete: Cascade)
+  documentNotices                           DocumentNotice[]
 }
 
 model DocumentNotice {
@@ -78,7 +79,9 @@ model DocumentNotice {
   approvalDate   String?
   requestedBy    String
   approvedBy     String?
+  documentId     Int
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime?
+  document       Document  @relation(references: [id], fields: [documentId], onDelete: Cascade)
 }

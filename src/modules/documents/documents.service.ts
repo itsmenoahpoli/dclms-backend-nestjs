@@ -59,6 +59,7 @@ export class DocumentsService {
       include: {
         originator: true,
         department: true,
+        documentNotices: true,
       },
     });
 
@@ -76,6 +77,7 @@ export class DocumentsService {
       include: {
         originator: true,
         department: true,
+        documentNotices: true,
       },
     });
 
@@ -85,6 +87,11 @@ export class DocumentsService {
   async getDocument(id: number) {
     const document = await this.prismaService.document.findUnique({
       where: { id },
+      include: {
+        originator: true,
+        department: true,
+        documentNotices: true,
+      },
     });
 
     return document;

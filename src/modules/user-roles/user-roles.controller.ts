@@ -41,7 +41,7 @@ export class UserRolesController {
   })
   @Patch("/:id")
   async updateRoleHandler(@Param("id") id: number, @Body() userRoleDTO: UserRoleDTO, @Res() response: Response) {
-    const data = await this.userRolesService.updateRole(id, userRoleDTO);
+    const data = await this.userRolesService.updateRole(+id, userRoleDTO);
 
     return response.status(HttpStatus.OK).json(data);
   }
