@@ -13,12 +13,12 @@ export class DocumentNoticesController {
   constructor(private readonly documentNoticesService: DocumentNoticesService) {}
 
   @ApiResponse({
-    status: 200,
-    description: "List of documents",
+    status: 201,
+    description: "Successfully created document notice",
   })
-  @Get("/")
-  async getDocumentsHandler(@Res() response: Response) {
-    const data = await this.documentNoticesService.getDocumentNotices();
+  @Post("/")
+  async createDocumentNoticeHandler(@Body() documentNoticeDTO: DocumentNoticeDTO, @Res() response: Response) {
+    const data = await this.documentNoticesService.createDocumentNotice(documentNoticeDTO);
 
     return response.status(HttpStatus.OK).json(data);
   }

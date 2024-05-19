@@ -77,7 +77,7 @@ model DocumentNotice {
   details        String
   nature         String
   approvalDate   String?
-  requestedBy    String
+  requestedBy    String?
   approvedBy     String?
   documentId     Int
   createdAt      DateTime  @default(now())

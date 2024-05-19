@@ -6,6 +6,19 @@ import { DocumentNoticeDTO } from "./document-notices.dto";
 export class DocumentNoticesService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  private async getRevisionDocumentRevisionNumber(documentId: number) {
+    const { documentNotices } = await this.prismaService.document.findUnique({
+      where: {
+        id: documentId,
+      },
+      include: {
+        documentNotices: true,
+      },
+    });
+
+    return documentNotices.length;
+  }
+
   async getDocumentNotices() {
     const documentNotices = await this.prismaService.documentNotice.findMany();
 
@@ -13,7 +26,7 @@ export class DocumentNoticesService {
   }
 
   async createDocumentNotice(documentNoticeData: DocumentNoticeDTO) {
-    const revisionNumber = 0;
+    const revisionNumber = await this.getRevisionDocumentRevisionNumber(documentNoticeData.documentId);
 
     const documentNotice = await this.prismaService.documentNotice.create({
       data: {

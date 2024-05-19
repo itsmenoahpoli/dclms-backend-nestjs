@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNumber, IsEnum, IsNotEmpty } from "class-validator";
+import { IsString, IsNumber, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import type { DocumentNotice } from "@prisma/client";
 
 export enum DocumentNoticeNature {
@@ -22,17 +22,17 @@ export class DocumentNoticeDTO implements Partial<DocumentNotice> {
   nature: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   approvalDate: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   approvedBy: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   requestedBy: string;
 
@@ -40,9 +40,4 @@ export class DocumentNoticeDTO implements Partial<DocumentNotice> {
   @IsNotEmpty()
   @IsNumber()
   documentId: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  originatorUserId: number;
 }

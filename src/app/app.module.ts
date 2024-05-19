@@ -10,6 +10,7 @@ import { DepartmentsModule } from "@/modules/departments/departments.module";
 import { UserRolesModule } from "@/modules/user-roles/user-roles.module";
 import { AccountsModule } from "@/modules/accounts/accounts.module";
 import { DocumentsModule } from "@/modules/documents/documents.module";
+import { DocumentNoticesModule } from "@/modules/document-notices/document-notices.module";
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DocumentsModule } from "@/modules/documents/documents.module";
     UserRolesModule,
     AccountsModule,
     DocumentsModule,
+    DocumentNoticesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
