@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma.service";
-import { hashPassword } from "@/utilities";
-import type { AccountDTO } from "./accounts.dto";
+import { hashPassword, verifyHashedPassword } from "@/utilities";
+import type { AccountDTO, AccountProfileDTO, AccountPasswordDTO } from "./accounts.dto";
 
 @Injectable()
 export class AccountsService {
@@ -57,6 +57,45 @@ export class AccountsService {
       data: {
         ...accountData,
         username: accountData.username.toLowerCase(),
+      },
+      include: {
+        userRole: true,
+      },
+    });
+
+    return account;
+  }
+
+  async updateAccountPassword(id: number, accountPasswordData: AccountPasswordDTO) {
+    const { password: userPassword } = await this.prismaService.user.findUnique({ where: { id } });
+
+    if (verifyHashedPassword(accountPasswordData.old_password, userPassword)) {
+      const account = await this.prismaService.user.update({
+        where: {
+          id,
+        },
+        data: {
+          password: hashPassword(accountPasswordData.new_password),
+        },
+        include: {
+          userRole: true,
+        },
+      });
+
+      return account;
+    }
+
+    return null;
+  }
+
+  async updateAccountProfile(id: number, accountProfileData: AccountProfileDTO) {
+    const account = await this.prismaService.user.update({
+      where: {
+        id,
+      },
+      data: {
+        ...accountProfileData,
+        username: accountProfileData.username.toLowerCase(),
       },
       include: {
         userRole: true,

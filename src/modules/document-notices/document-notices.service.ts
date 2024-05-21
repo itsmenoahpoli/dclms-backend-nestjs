@@ -27,7 +27,6 @@ export class DocumentNoticesService {
 
   async createDocumentNotice(documentNoticeData: DocumentNoticeDTO) {
     const revisionNumber = await this.getRevisionDocumentRevisionNumber(documentNoticeData.documentId);
-
     const documentNotice = await this.prismaService.documentNotice.create({
       data: {
         revisionNumber,
