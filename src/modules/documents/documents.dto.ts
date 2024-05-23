@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNumber, IsEnum, IsNotEmpty } from "class-validator";
+import { IsString, IsNumber, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { Document } from "@prisma/client";
 
 export enum SourceDocument {
@@ -33,6 +33,11 @@ export class DocumentDTO implements Partial<Document> {
   @IsNotEmpty()
   @IsString()
   externalUrl: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  remarks: string;
 
   @ApiProperty()
   @IsNotEmpty()

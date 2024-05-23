@@ -15,20 +15,12 @@ export class DocumentsService {
     private readonly departmentsService: DepartmentsService
   ) {}
 
-  private formatSeriesCount(value: number) {
-    console.log("formatSeriesCount", value);
-    if (value < 10) {
-      console.log("value < 10");
-      return `000${value}`;
+  private formatSeriesCount(value: number, seriesNumber: string) {
+    if (seriesNumber === "000") {
+      +value.toString().padStart(4, "0");
     }
 
-    if (value < 100 && value > 10) {
-      return `00${value}`;
-    }
-
-    if (value < 1000 && value > 100) {
-      return `0${value}`;
-    }
+    return +seriesNumber + value;
   }
 
   private async getSourceDocumentCount(sourceDoc: string, departmentId: number) {
@@ -42,11 +34,11 @@ export class DocumentsService {
     return sourceDocCount;
   }
 
-  private async createSeriesNumber(departmentId: number, department: string, sourceDoc: string) {
+  private async createSeriesNumber(departmentId: number, department: string, departmentSeriesNumber: string, sourceDoc: string) {
     /** Format: {sourceDoc-department-0000(fileCount by document sourceDocument type)} (example: FM-SOC-0002) */
     const departmentAcronym = makeAcronyms(department);
     const sourceDocAcronym = makeAcronyms(sourceDoc);
-    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(sourceDoc, departmentId)) + 1);
+    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(sourceDoc, departmentId)) + 1, departmentSeriesNumber);
 
     return `${sourceDocAcronym}-${departmentAcronym}-${seriesNumber}`;
   }
@@ -120,7 +112,12 @@ export class DocumentsService {
     }
 
     const department = await this.departmentsService.getDepartment(documentData.departmentId);
-    const seriesNumber = await this.createSeriesNumber(documentData.departmentId, department.name, documentData.sourceDocument);
+    const seriesNumber = await this.createSeriesNumber(
+      documentData.departmentId,
+      department.name,
+      department.seriesPrefix,
+      documentData.sourceDocument
+    );
 
     const document = await this.prismaService.document.create({
       // @ts-ignore

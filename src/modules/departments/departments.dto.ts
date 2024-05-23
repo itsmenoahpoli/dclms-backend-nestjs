@@ -7,4 +7,14 @@ export class DepartmentDTO implements Partial<Department> {
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  title: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  seriesPrefix: string;
 }

@@ -16,8 +16,10 @@ export class AccountsService {
   async getAccounts() {
     const accounts = await this.prismaService.user.findMany({
       where: {
-        userRoleId: {
-          not: 1,
+        userRole: {
+          name: {
+            not: "superadmin",
+          },
         },
       },
       include: {

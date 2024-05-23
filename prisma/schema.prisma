@@ -14,13 +14,15 @@ datasource db {
 }
 
 model Department {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  deletedAt DateTime?
-  users     User[]
-  documents Document[]
+  id           Int        @id @default(autoincrement())
+  name         String     @unique
+  title        String     @unique
+  seriesPrefix String     @unique
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  deletedAt    DateTime?
+  users        User[]
+  documents    Document[]
 }
 
 model UserRole {
@@ -58,6 +60,7 @@ model Document {
   externalUrl                               String           @unique
   sourceDocument                            String
   status                                    String           @default("pending")
+  remarks                                   String?
   effectivityDate                           String?
   isDocumentControllerApproved              Boolean          @default(false)
   isQualityManagementRepresentativeApproved Boolean          @default(false)
