@@ -6,6 +6,7 @@ export enum DocumentNoticeNature {
   CREATION = "creation",
   REVISION = "revision",
   ADDITION = "addition",
+  ARCHIVE = "archive",
   DELETION = "deletion",
 }
 

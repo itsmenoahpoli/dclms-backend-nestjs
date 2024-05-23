@@ -16,17 +16,18 @@ export class DocumentsService {
   ) {}
 
   private formatSeriesCount(value: number, seriesNumber: string) {
+    console.log(seriesNumber, typeof seriesNumber);
     if (seriesNumber === "000") {
-      +value.toString().padStart(4, "0");
+      console.log(+value.toString().padStart(4, "0"));
+      Number(value).toString().padStart(4, "0");
     }
 
     return +seriesNumber + value;
   }
 
-  private async getSourceDocumentCount(sourceDoc: string, departmentId: number) {
+  private async getSourceDocumentCount(departmentId: number) {
     const sourceDocCount = await this.prismaService.document.count({
       where: {
-        sourceDocument: sourceDoc,
         departmentId,
       },
     });
@@ -38,7 +39,7 @@ export class DocumentsService {
     /** Format: {sourceDoc-department-0000(fileCount by document sourceDocument type)} (example: FM-SOC-0002) */
     const departmentAcronym = makeAcronyms(department);
     const sourceDocAcronym = makeAcronyms(sourceDoc);
-    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(sourceDoc, departmentId)) + 1, departmentSeriesNumber);
+    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(departmentId)) + 1, departmentSeriesNumber);
 
     return `${sourceDocAcronym}-${departmentAcronym}-${seriesNumber}`;
   }
@@ -87,6 +88,15 @@ export class DocumentsService {
     });
 
     return document;
+  }
+
+  async archiveDepartment(id: number) {
+    const document = await this.prismaService.document.update({
+      where: { id },
+      data: {
+        archivedAt: new Date().toISOString(),
+      },
+    });
   }
 
   async createDocument(documentData: DocumentDTO) {

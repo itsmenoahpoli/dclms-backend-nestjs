@@ -52,6 +52,21 @@ export class DocumentsController {
   }
 
   @ApiResponse({
+    status: 200,
+    description: "Archive document by id",
+  })
+  @Post("/archive/:id")
+  async archiveDocumentHandler(@Param("id") id: number, @Res() response: Response) {
+    const data = await this.documentsService.getDocument(+id);
+
+    if (!data) {
+      return response.status(HttpStatus.NOT_FOUND).json(data);
+    }
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
     status: 201,
     description: "Successfully created document",
   })

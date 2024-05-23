@@ -30,6 +30,7 @@ export class DocumentNoticesService {
     const documentNotice = await this.prismaService.documentNotice.create({
       data: {
         revisionNumber,
+        nature: documentNoticeData.nature.toLowerCase(),
         ...documentNoticeData,
       },
     });
