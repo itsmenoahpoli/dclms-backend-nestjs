@@ -49,6 +49,27 @@ export class DocumentsService {
       orderBy: {
         id: "desc",
       },
+      where: {
+        status: "pending",
+      },
+      include: {
+        originator: true,
+        department: true,
+        documentNotices: true,
+      },
+    });
+
+    return documents;
+  }
+
+  async getDocumentsByStatus(status: "pending" | "approved") {
+    const documents = await this.prismaService.document.findMany({
+      orderBy: {
+        id: "desc",
+      },
+      where: {
+        status,
+      },
       include: {
         originator: true,
         department: true,
@@ -146,6 +167,8 @@ export class DocumentsService {
       nature: DocumentNoticeNature.CREATION,
       requestedBy: department.name,
       documentId: document.id,
+      approvalDate: new Date().toISOString(),
+      approvedBy: "SYSTEM",
     } as DocumentNoticeDTO);
 
     return { document, documentNotice };

@@ -3,7 +3,6 @@ import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
 import { DocumentsService } from "./documents.service";
 import { DocumentDTO } from "./documents.dto";
-import { AuthGuard } from "@/guards";
 
 @ApiTags("Documents API")
 @Controller({
@@ -21,6 +20,17 @@ export class DocumentsController {
   @Get("/")
   async getDocumentsHandler(@Res() response: Response) {
     const data = await this.documentsService.getDocuments();
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: "List of documents by status",
+  })
+  @Get("/status/:status")
+  async getDocumentsByStatusHandler(@Param("status") status: "approved" | "pending", @Res() response: Response) {
+    const data = await this.documentsService.getDocumentsByStatus(status);
 
     return response.status(HttpStatus.OK).json(data);
   }
