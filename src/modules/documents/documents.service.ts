@@ -56,9 +56,9 @@ export class DocumentsService {
       orderBy: {
         id: "desc",
       },
-      where: {
-        status: "pending",
-      },
+      // where: {
+      //   status: "pending",
+      // },
       include: {
         originator: true,
         department: true,
@@ -146,6 +146,20 @@ export class DocumentsService {
         archivedAt: new Date().toISOString(),
       },
     });
+
+    return document;
+  }
+
+  async updateStatusDocument(id: number, status: "approved" | "declined") {
+    const document = await this.prismaService.document.update({
+      where: { id },
+      data: {
+        status,
+        effectivityDate: status === "approved" ? new Date().toISOString() : null,
+      },
+    });
+
+    return document;
   }
 
   async createDocument(documentData: DocumentDTO) {
@@ -195,8 +209,6 @@ export class DocumentsService {
       nature: DocumentNoticeNature.CREATION,
       requestedBy: department.name,
       documentId: document.id,
-      approvalDate: new Date().toISOString(),
-      approvedBy: "SYSTEM",
     } as DocumentNoticeDTO);
 
     return { document, documentNotice };

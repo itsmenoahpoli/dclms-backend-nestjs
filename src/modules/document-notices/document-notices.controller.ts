@@ -33,4 +33,15 @@ export class DocumentNoticesController {
 
     return response.status(HttpStatus.OK).json(data);
   }
+
+  @ApiResponse({
+    status: 200,
+    description: "Successfully approved document notice",
+  })
+  @Post("/approve/:id")
+  async approveDocumentNoticeHandler(@Param("id") id: number, @Res() response: Response) {
+    const data = await this.documentNoticesService.approveDocumentNotice(+id);
+
+    return response.status(HttpStatus.OK).json(data);
+  }
 }

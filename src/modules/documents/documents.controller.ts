@@ -88,6 +88,28 @@ export class DocumentsController {
   }
 
   @ApiResponse({
+    status: 200,
+    description: "Decline document by id",
+  })
+  @Post("/approve/:id")
+  async approveDocumentHandler(@Param("id") id: number, @Res() response: Response) {
+    const data = await this.documentsService.updateStatusDocument(+id, "approved");
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: "Decline document by id",
+  })
+  @Post("/decline/:id")
+  async declineDocumentHandler(@Param("id") id: number, @Res() response: Response) {
+    const data = await this.documentsService.updateStatusDocument(+id, "declined");
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
     status: 201,
     description: "Successfully created document",
   })

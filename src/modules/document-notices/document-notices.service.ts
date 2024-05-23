@@ -25,6 +25,20 @@ export class DocumentNoticesService {
     return documentNotices;
   }
 
+  async approveDocumentNotice(id: number) {
+    const documentNotices = await this.prismaService.documentNotice.update({
+      where: {
+        id,
+      },
+      data: {
+        approvedBy: "DOCUMENT-CONTROLLER",
+        approvalDate: new Date().toISOString(),
+      },
+    });
+
+    return documentNotices;
+  }
+
   async createDocumentNotice(documentNoticeData: DocumentNoticeDTO) {
     const revisionNumber = await this.getRevisionDocumentRevisionNumber(documentNoticeData.documentId);
     const documentNotice = await this.prismaService.documentNotice.create({
