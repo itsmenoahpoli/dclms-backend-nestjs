@@ -105,19 +105,14 @@ async function populateDatabase() {
 }
 
 async function clearDatabase() {
-  // Fetch all table names
-  // @ts-ignore
-  // const tableNames = await prisma.$queryRaw`SELECT tablename FROM pg_tables WHERE schemaname = 'public';`;
-  // Drop all tables
-  // @ts-ignore
-  // for (const { tablename } of tableNames) {
-  //   await prisma.$executeRawUnsafe(`DROP TABLE IF EXISTS "${tablename}" CASCADE;`);
-  // }
+  // Clear documents table
+  await prisma.documentNotice.deleteMany({});
+  await prisma.document.deleteMany({});
 }
 
 async function seed() {
-  populateDatabase();
-  // clearDatabase();
+  // populateDatabase();
+  clearDatabase();
 }
 
 seed().finally(() => prisma.$disconnect());
