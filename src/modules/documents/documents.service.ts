@@ -18,8 +18,17 @@ export class DocumentsService {
   private formatSeriesCount(value: number, seriesNumber: string) {
     console.log(seriesNumber, typeof seriesNumber);
     if (seriesNumber === "000") {
-      console.log(+value.toString().padStart(4, "0"));
-      Number(value).toString().padStart(4, "0");
+      if (value < 10) {
+        return `000${value}`;
+      }
+
+      if (value < 100 && value > 10) {
+        return `00${value}`;
+      }
+
+      if (value < 1000 && value > 100) {
+        return `0${value}`;
+      }
     }
 
     return +seriesNumber + value;
