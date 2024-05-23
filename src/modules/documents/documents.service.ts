@@ -19,16 +19,14 @@ export class DocumentsService {
     console.log(seriesNumber, typeof seriesNumber);
     if (seriesNumber === "000") {
       if (value < 10) {
-        return `000${value}`;
-      }
-
-      if (value < 100 && value > 10) {
         return `00${value}`;
       }
 
-      if (value < 1000 && value > 100) {
+      if (value < 100 && value > 10) {
         return `0${value}`;
       }
+
+      return value;
     }
 
     return +seriesNumber + value;
@@ -93,6 +91,27 @@ export class DocumentsService {
     const documents = await this.prismaService.document.findMany({
       where: {
         departmentId,
+      },
+      orderBy: {
+        id: "desc",
+      },
+      include: {
+        originator: true,
+        department: true,
+        documentNotices: true,
+      },
+    });
+
+    return documents;
+  }
+
+  async getArchivedDocumentsByDepartment(departmentId: number) {
+    const documents = await this.prismaService.document.findMany({
+      where: {
+        departmentId,
+        archivedAt: {
+          not: null,
+        },
       },
       orderBy: {
         id: "desc",

@@ -48,6 +48,17 @@ export class DocumentsController {
 
   @ApiResponse({
     status: 200,
+    description: "List of archived documents by department",
+  })
+  @Get("/archived/department/:departmentId")
+  async getArchivedDocumentsByDepartmentHandler(@Param("departmentId") departmentId: number, @Res() response: Response) {
+    const data = await this.documentsService.getArchivedDocumentsByDepartment(+departmentId);
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
+    status: 200,
     description: "Get document by id",
   })
   @Get("/:id")
