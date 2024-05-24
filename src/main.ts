@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 import helmet from "helmet";
 import * as compression from "compression";
-import basicAuth from "express-basic-auth";
+import * as basicAuth from "express-basic-auth";
 
 import { AppModule } from "@/app/app.module";
 import { GlobalExceptionFilter } from "@/filters";
@@ -38,17 +38,15 @@ async function bootstrap() {
   /**
    * Require login to view api documentation in production env
    */
-  // if (process.env.NODE_ENV === 'production') {
-  //   app.use(
-  //     ['/docs'],
-  //     basicAuth({
-  //       challenge: true,
-  //       users: {
-  //         admin: 'admin',
-  //       },
-  //     }),
-  //   );
-  // }
+  app.use(
+    ["/docs"],
+    basicAuth({
+      challenge: true,
+      users: {
+        admin: "admin",
+      },
+    })
+  );
 
   /**
    * Swagger configuration
@@ -61,7 +59,7 @@ async function bootstrap() {
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
 
-  SwaggerModule.setup("docs/api", app, swaggerDocument, {customSiteTitle: "OIE Swagger API Documentation"});
+  SwaggerModule.setup("docs/api", app, swaggerDocument, { customSiteTitle: "OIE Swagger API Documentation" });
 
   await app.listen(port);
 }
