@@ -11,6 +11,10 @@ export class DepartmentsService {
       orderBy: {
         id: "desc",
       },
+      include: {
+        users: true,
+        documents: true,
+      },
     });
 
     return departments;
