@@ -94,7 +94,7 @@ export class AccountsController {
   async createAccountHandler(@Body() accountDTO: AccountDTO, @Res() response: Response) {
     const data = await this.accountsService.createAccount(accountDTO);
 
-    if (data.message === "EMAIL_USED_ALREADY") {
+    if (data.message === "EMAIL_USED_ALREADY" || data.message === "ACCOUNT_WITH_NAME_ALREADY_EXIST") {
       return response.status(HttpStatus.BAD_REQUEST).json(data);
     }
 

@@ -69,7 +69,7 @@ export class DocumentsService {
     return documents;
   }
 
-  async getDocumentsByStatus(status: "pending" | "approved") {
+  async getDocumentsByStatus(status: "pending" | "in-progress" | "approved") {
     const documents = await this.prismaService.document.findMany({
       orderBy: {
         id: "desc",

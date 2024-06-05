@@ -1,4 +1,4 @@
-import { Controller, Res, Get, Post, Patch, Delete, Body, HttpStatus, Param, UseGuards } from "@nestjs/common";
+import { Controller, Res, Get, Post, Patch, Delete, Body, HttpStatus, Param } from "@nestjs/common";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
 import { DocumentsService } from "./documents.service";
@@ -29,7 +29,7 @@ export class DocumentsController {
     description: "List of documents by status",
   })
   @Get("/status/:status")
-  async getDocumentsByStatusHandler(@Param("status") status: "approved" | "pending", @Res() response: Response) {
+  async getDocumentsByStatusHandler(@Param("status") status: "approved" | "in-progress" | "pending", @Res() response: Response) {
     const data = await this.documentsService.getDocumentsByStatus(status);
 
     return response.status(HttpStatus.OK).json(data);

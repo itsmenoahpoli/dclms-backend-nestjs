@@ -128,6 +128,19 @@ export class AccountsService {
       accountData.departmentId = null;
     }
 
+    const checkAccountName = await this.prismaService.user.count({
+      where: {
+        name: accountData.name,
+        departmentId: accountData.departmentId,
+      },
+    });
+
+    if (checkAccountName > 0) {
+      return {
+        message: "ACCOUNT_WITH_NAME_ALREADY_EXIST",
+      };
+    }
+
     const account = await this.prismaService.user.create({
       data: {
         ...accountData,
