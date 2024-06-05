@@ -131,7 +131,6 @@ export class AccountsService {
     const checkAccountName = await this.prismaService.user.count({
       where: {
         name: accountData.name,
-        departmentId: accountData.departmentId,
       },
     });
 
