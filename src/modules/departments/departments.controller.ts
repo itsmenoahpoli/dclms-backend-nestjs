@@ -51,7 +51,7 @@ export class DepartmentsController {
   })
   @Delete("/:id")
   async deleteDepartmentHandler(@Param("id") id: number, @Res() response: Response) {
-    const data = await this.departmentsService.deleteDepartment(id);
+    const data = await this.departmentsService.deleteDepartment(+id);
 
     return response.status(HttpStatus.NO_CONTENT).json(data);
   }

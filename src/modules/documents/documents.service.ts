@@ -57,9 +57,6 @@ export class DocumentsService {
       orderBy: {
         id: "desc",
       },
-      // where: {
-      //   status: "pending",
-      // },
       include: {
         originator: true,
         department: true,
