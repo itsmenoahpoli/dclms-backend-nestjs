@@ -6,6 +6,7 @@ import { DocumentDTO, SourceDocument } from "./documents.dto";
 import { DocumentNoticeDTO, DocumentNoticeNature } from "@/modules/document-notices/document-notices.dto";
 import { DepartmentsService } from "@/modules/departments/departments.service";
 import { makeAcronyms } from "@/utilities";
+import { Department } from "@prisma/client";
 
 @Injectable()
 export class DocumentsService {
@@ -42,11 +43,11 @@ export class DocumentsService {
     return sourceDocCount;
   }
 
-  private async createSeriesNumber(departmentId: number, department: string, departmentSeriesNumber: string, sourceDoc: string) {
+  private async createSeriesNumber(departmentId: number, department: Department, sourceDoc: string) {
     /** Format: {sourceDoc-department-0000(fileCount by document sourceDocument type)} (example: FM-SOC-0002) */
-    const departmentAcronym = makeAcronyms(department);
+    const departmentAcronym = department.title;
     const sourceDocAcronym = makeAcronyms(sourceDoc);
-    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(departmentId)) + 1, departmentSeriesNumber);
+    const seriesNumber = this.formatSeriesCount((await this.getSourceDocumentCount(departmentId)) + 1, department.seriesPrefix);
 
     return `${sourceDocAcronym}-${departmentAcronym}-${seriesNumber}`;
   }
@@ -185,12 +186,7 @@ export class DocumentsService {
     }
 
     const department = await this.departmentsService.getDepartment(documentData.departmentId);
-    const seriesNumber = await this.createSeriesNumber(
-      documentData.departmentId,
-      department.name,
-      department.seriesPrefix,
-      documentData.sourceDocument
-    );
+    const seriesNumber = await this.createSeriesNumber(documentData.departmentId, department, documentData.sourceDocument);
 
     const document = await this.prismaService.document.create({
       // @ts-ignore
