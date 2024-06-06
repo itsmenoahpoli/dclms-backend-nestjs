@@ -58,7 +58,7 @@ model Document {
   departmentId     Int?
   originatorUserId Int?
   originatorName   String?
-  name             String           @unique
+  name             String
   seriesNumber     String           @unique
   externalUrl      String           @unique
   totalPages       Int?
@@ -76,16 +76,18 @@ model Document {
 }
 
 model DocumentNotice {
-  id             Int       @id @default(autoincrement())
-  revisionNumber Int
-  details        String
-  nature         String
-  approvalDate   String?
-  requestedBy    String?
-  approvedBy     String?
-  documentId     Int
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  deletedAt      DateTime?
-  document       Document  @relation(references: [id], fields: [documentId], onDelete: Cascade)
+  id               Int       @id @default(autoincrement())
+  revisionNumber   Int
+  details          String
+  nature           String
+  externalUrl      String?   @unique
+  complyForDetails String?
+  approvalDate     String?
+  requestedBy      String?
+  approvedBy       String?
+  documentId       Int
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+  document         Document  @relation(references: [id], fields: [documentId], onDelete: Cascade)
 }

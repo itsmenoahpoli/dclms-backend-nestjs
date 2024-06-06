@@ -141,6 +141,7 @@ export class DocumentsService {
     const document = await this.prismaService.document.update({
       where: { id },
       data: {
+        status: "archived",
         archivedAt: new Date().toISOString(),
       },
     });
@@ -161,7 +162,7 @@ export class DocumentsService {
   }
 
   async createDocument(documentData: DocumentDTO) {
-    const checkDocumentName = await this.prismaService.document.findUnique({
+    const checkDocumentName = await this.prismaService.document.findFirst({
       where: {
         name: documentData.name,
       },
