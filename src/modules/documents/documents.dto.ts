@@ -35,6 +35,11 @@ export class DocumentDTO implements Partial<Document> {
   externalUrl: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  totalPages: number;
+
+  @ApiProperty()
   @IsOptional()
   @IsString()
   remarks: string;

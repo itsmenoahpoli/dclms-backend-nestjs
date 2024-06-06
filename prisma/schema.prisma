@@ -60,6 +60,7 @@ model Document {
   name             String           @unique
   seriesNumber     String           @unique
   externalUrl      String           @unique
+  totalPages       Int?
   sourceDocument   String
   status           String           @default("pending")
   remarks          String?
