@@ -202,7 +202,8 @@ export class DocumentsService {
       nature: DocumentNoticeNature.CREATION,
       requestedBy: department.name,
       documentId: document.id,
-    } as DocumentNoticeDTO);
+      status: "approved",
+    } as DocumentNoticeDTO & { status: string });
 
     return { document, documentNotice };
   }

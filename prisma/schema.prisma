@@ -56,7 +56,8 @@ model User {
 model Document {
   id               Int              @id @default(autoincrement())
   departmentId     Int?
-  originatorUserId Int
+  originatorUserId Int?
+  originatorName   String?
   name             String           @unique
   seriesNumber     String           @unique
   externalUrl      String           @unique
@@ -70,7 +71,7 @@ model Document {
   deletedAt        DateTime?
   archivedAt       DateTime?
   department       Department?      @relation(references: [id], fields: [departmentId], onDelete: SetNull)
-  originator       User             @relation(references: [id], fields: [originatorUserId], onDelete: Cascade)
+  originator       User?            @relation(references: [id], fields: [originatorUserId], onDelete: SetNull)
   documentNotices  DocumentNotice[]
 }
 
