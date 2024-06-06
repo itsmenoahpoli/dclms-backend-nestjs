@@ -184,11 +184,17 @@ export class DocumentsService {
 
     const department = await this.departmentsService.getDepartment(documentData.departmentId);
     const seriesNumber = await this.createSeriesNumber(documentData.departmentId, department, documentData.sourceDocument);
+    const originatorUser = await this.prismaService.user.findUnique({
+      where: {
+        id: documentData.originatorUserId,
+      },
+    });
 
     const document = await this.prismaService.document.create({
       // @ts-ignore
       data: {
         seriesNumber,
+        originatorName: originatorUser.name,
         ...documentData,
       },
       include: {
@@ -202,8 +208,9 @@ export class DocumentsService {
       nature: DocumentNoticeNature.CREATION,
       requestedBy: department.name,
       documentId: document.id,
-      status: "approved",
-    } as DocumentNoticeDTO & { status: string });
+      approvedBy: "SYSTEM",
+      approvalDate: new Date().toISOString(),
+    } as DocumentNoticeDTO);
 
     return { document, documentNotice };
   }
