@@ -64,6 +64,11 @@ export class DepartmentsController {
   async createDepartmentHandler(@Body() departmentDTO: DepartmentDTO, @Res() response: Response) {
     const data = await this.departmentsService.createDepartment(departmentDTO);
 
+    // @ts-ignore
+    if (data.message === "DEPARTMENT_ALREADY_EXISTS") {
+      return response.status(HttpStatus.BAD_REQUEST).json(data);
+    }
+
     return response.status(HttpStatus.CREATED).json(data);
   }
 }

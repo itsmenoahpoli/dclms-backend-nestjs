@@ -54,6 +54,28 @@ export class DepartmentsService {
   }
 
   async createDepartment(departmentData: DepartmentDTO) {
+    const departmentExists = await this.prismaService.department.count({
+      where: {
+        OR: [
+          {
+            name: departmentData.name,
+          },
+          {
+            title: departmentData.title,
+          },
+          {
+            seriesPrefix: departmentData.seriesPrefix,
+          },
+        ],
+      },
+    });
+
+    if (departmentExists) {
+      return {
+        message: "DEPARTMENT_ALREADY_EXISTS",
+      };
+    }
+
     const department = await this.prismaService.department.create({
       data: {
         ...departmentData,
