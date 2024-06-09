@@ -83,6 +83,7 @@ model DocumentNotice {
   externalUrl      String?   @unique
   complyForDetails String?
   approvalDate     String?
+  complyBy         String?
   requestedBy      String?
   approvedBy       String?
   documentId       Int

@@ -141,7 +141,6 @@ export class DocumentsService {
     const document = await this.prismaService.document.update({
       where: { id },
       data: {
-        status: "archived",
         archivedAt: new Date().toISOString(),
       },
     });
@@ -155,6 +154,18 @@ export class DocumentsService {
       data: {
         status,
         effectivityDate: status === "approved" ? new Date().toISOString() : null,
+      },
+    });
+
+    return document;
+  }
+
+  async archiveDocument(id: number) {
+    const document = await this.prismaService.document.update({
+      where: { id },
+      data: {
+        status: "archived",
+        archivedAt: new Date().toISOString(),
       },
     });
 
