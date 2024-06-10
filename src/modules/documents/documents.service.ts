@@ -242,6 +242,7 @@ export class DocumentsService {
       documentId: document.id,
       approvedBy: "SYSTEM",
       approvalDate: new Date().toISOString(),
+      type: "originator-request",
     } as DocumentNoticeDTO);
 
     return { document, documentNotice };
