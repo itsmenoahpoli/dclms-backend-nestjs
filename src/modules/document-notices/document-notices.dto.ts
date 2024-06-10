@@ -24,6 +24,11 @@ export class DocumentNoticeDTO implements Partial<DocumentNotice> {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  pageNumber: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   @IsEnum(DocumentNoticeNature)
   nature: string;
 

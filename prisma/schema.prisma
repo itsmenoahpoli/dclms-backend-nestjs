@@ -80,6 +80,7 @@ model DocumentNotice {
   revisionNumber   Int
   details          String
   nature           String
+  pageNumber       String?
   externalUrl      String?   @unique
   complyForDetails String?
   approvalDate     String?
