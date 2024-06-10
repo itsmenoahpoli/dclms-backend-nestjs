@@ -19,6 +19,11 @@ export class DocumentNoticeDTO implements Partial<DocumentNotice> {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  type: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   @IsEnum(DocumentNoticeNature)
   nature: string;
 
@@ -31,6 +36,11 @@ export class DocumentNoticeDTO implements Partial<DocumentNotice> {
   @IsOptional()
   @IsString()
   approvedBy: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  complyBy: string;
 
   @ApiProperty()
   @IsOptional()

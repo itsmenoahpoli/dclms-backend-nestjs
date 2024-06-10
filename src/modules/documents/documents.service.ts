@@ -103,6 +103,26 @@ export class DocumentsService {
     return documents;
   }
 
+  async getArchivedDocuments() {
+    const documents = await this.prismaService.document.findMany({
+      where: {
+        archivedAt: {
+          not: null,
+        },
+      },
+      orderBy: {
+        id: "desc",
+      },
+      include: {
+        originator: true,
+        department: true,
+        documentNotices: true,
+      },
+    });
+
+    return documents;
+  }
+
   async getArchivedDocumentsByDepartment(departmentId: number) {
     const documents = await this.prismaService.document.findMany({
       where: {

@@ -86,6 +86,7 @@ model DocumentNotice {
   complyBy         String?
   requestedBy      String?
   approvedBy       String?
+  type             String
   documentId       Int
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt

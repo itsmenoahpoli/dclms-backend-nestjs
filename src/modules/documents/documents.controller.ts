@@ -26,6 +26,17 @@ export class DocumentsController {
 
   @ApiResponse({
     status: 200,
+    description: "List of archived documents",
+  })
+  @Get("/archived")
+  async getArchivedDocumentsHandler(@Res() response: Response) {
+    const data = await this.documentsService.getArchivedDocuments();
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
+    status: 200,
     description: "List of documents by status",
   })
   @Get("/status/:status")
