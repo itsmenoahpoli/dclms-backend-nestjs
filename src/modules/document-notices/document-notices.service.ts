@@ -49,6 +49,17 @@ export class DocumentNoticesService {
       },
     });
 
+    if ((await this.prismaService.documentNotice.count({ where: { documentId: documentNoticeData.documentId } })) > 1) {
+      await this.prismaService.document.update({
+        where: {
+          id: documentNoticeData.documentId,
+        },
+        data: {
+          status: "in-progress",
+        },
+      });
+    }
+
     return documentNotice;
   }
 }

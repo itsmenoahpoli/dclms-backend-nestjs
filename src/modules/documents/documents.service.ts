@@ -173,7 +173,6 @@ export class DocumentsService {
       where: { id },
       data: {
         status,
-        archivedAt: status === "declined" ? new Date().toISOString() : null,
         effectivityDate: status === "approved" ? new Date().toISOString() : null,
       },
     });
