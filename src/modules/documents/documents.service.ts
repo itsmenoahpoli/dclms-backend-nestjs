@@ -209,7 +209,7 @@ export class DocumentsService {
     if (checkDocumentName || checkDocumentUrl) {
       return {
         hasValidationError: true,
-        message: "DOCUMENT_NAME_OR_URL_ALREADY_USED",
+        message: "DOCUMENT_NAME_OR_URL_ALREADY_EXIST",
         document: null,
         department: null,
       };
