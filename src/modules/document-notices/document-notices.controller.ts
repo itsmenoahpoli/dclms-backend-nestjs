@@ -2,7 +2,7 @@ import { Controller, Res, Get, Post, Patch, Delete, Body, HttpStatus, Param } fr
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
 import { DocumentNoticesService } from "./document-notices.service";
-import { DocumentNoticeDTO } from "./document-notices.dto";
+import { DocumentNoticeDTO, DocumentNoticeComplyDTO } from "./document-notices.dto";
 
 @ApiTags("Document Notices API")
 @Controller({
@@ -49,9 +49,9 @@ export class DocumentNoticesController {
     status: 200,
     description: "Successfully created document comply notice",
   })
-  @Post("/:id/comply/add")
-  async addDocumentComplyNoticeHandler(@Param("id") id: number, @Res() response: Response) {
-    const data = await this.documentNoticesService.approveDocumentNotice(+id);
+  @Post("/comply/add")
+  async addDocumentComplyNoticeHandler(@Body() documentNoticeComplyDTO: DocumentNoticeComplyDTO, @Res() response: Response) {
+    const data = await this.documentNoticesService.addDocumentComplyNotice(documentNoticeComplyDTO);
 
     return response.status(HttpStatus.OK).json(data);
   }
@@ -60,7 +60,7 @@ export class DocumentNoticesController {
     status: 200,
     description: "Successfully created document comply notice",
   })
-  @Post("/:id/comply/update-status")
+  @Patch("/:id/comply/update-status")
   async updateDocumentComplyNoticeStatusHandler(@Param("id") id: number, @Res() response: Response) {
     const data = await this.documentNoticesService.approveDocumentNotice(+id);
 

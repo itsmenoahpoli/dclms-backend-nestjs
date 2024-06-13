@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsNumber, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
-import type { DocumentNotice } from "@prisma/client";
+import type { DocumentNotice, DocumentNoticeComply } from "@prisma/client";
 
 export enum DocumentNoticeNature {
   CREATION = "creation",
@@ -61,4 +61,36 @@ export class DocumentNoticeDTO implements Partial<DocumentNotice> {
   @IsNotEmpty()
   @IsNumber()
   documentId: number;
+}
+
+export class DocumentNoticeComplyDTO implements Partial<DocumentNoticeComply> {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  details: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  externalUrl?: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  pageNumber: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  complyBy: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  documentId: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  documentNoticeId: number;
 }

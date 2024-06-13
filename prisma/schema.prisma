@@ -86,6 +86,7 @@ model DocumentNotice {
   approvalDate         String?
   requestedBy          String?
   approvedBy           String?
+  type                 String
   isComplied           Boolean                @default(false)
   documentId           Int
   createdAt            DateTime               @default(now())

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma.service";
-import { DocumentNoticeDTO } from "./document-notices.dto";
+import { DocumentNoticeDTO, DocumentNoticeComplyDTO } from "./document-notices.dto";
 
 @Injectable()
 export class DocumentNoticesService {
@@ -62,5 +62,15 @@ export class DocumentNoticesService {
     }
 
     return documentNotice;
+  }
+
+  async addDocumentComplyNotice(documentNoticeComplyData: DocumentNoticeComplyDTO) {
+    const documentNoticeComply = await this.prismaService.documentNoticeComply.create({
+      data: {
+        ...documentNoticeComplyData,
+      },
+    });
+
+    return documentNoticeComply;
   }
 }

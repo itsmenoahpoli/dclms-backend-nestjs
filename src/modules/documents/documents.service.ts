@@ -150,7 +150,11 @@ export class DocumentsService {
       include: {
         originator: true,
         department: true,
-        documentNotices: true,
+        documentNotices: {
+          include: {
+            documentNoticeComply: true,
+          },
+        },
       },
     });
 
