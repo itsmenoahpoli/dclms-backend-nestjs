@@ -101,6 +101,7 @@ model DocumentNoticeComply {
   pageNumber       String?
   externalUrl      String?
   complyBy         String?
+  status           String         @default("pending")
   documentId       Int
   documentNoticeId Int
   createdAt        DateTime       @default(now())

@@ -44,4 +44,26 @@ export class DocumentNoticesController {
 
     return response.status(HttpStatus.OK).json(data);
   }
+
+  @ApiResponse({
+    status: 200,
+    description: "Successfully created document comply notice",
+  })
+  @Post("/:id/comply/add")
+  async addDocumentComplyNoticeHandler(@Param("id") id: number, @Res() response: Response) {
+    const data = await this.documentNoticesService.approveDocumentNotice(+id);
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: "Successfully created document comply notice",
+  })
+  @Post("/:id/comply/update-status")
+  async updateDocumentComplyNoticeStatusHandler(@Param("id") id: number, @Res() response: Response) {
+    const data = await this.documentNoticesService.approveDocumentNotice(+id);
+
+    return response.status(HttpStatus.OK).json(data);
+  }
 }
