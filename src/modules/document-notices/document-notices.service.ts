@@ -46,6 +46,7 @@ export class DocumentNoticesService {
         revisionNumber,
         nature: documentNoticeData.nature.toLowerCase(),
         ...documentNoticeData,
+        isComplied: documentNoticeData.complyBy !== null,
       },
     });
 

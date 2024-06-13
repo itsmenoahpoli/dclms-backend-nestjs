@@ -54,43 +54,58 @@ model User {
 }
 
 model Document {
-  id               Int              @id @default(autoincrement())
-  departmentId     Int?
-  originatorUserId Int?
-  originatorName   String?
-  name             String
-  seriesNumber     String           @unique
-  externalUrl      String?          @unique
-  totalPages       Int?
-  sourceDocument   String
-  status           String           @default("pending")
-  remarks          String?
-  effectivityDate  String?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  deletedAt        DateTime?
-  archivedAt       DateTime?
-  department       Department?      @relation(references: [id], fields: [departmentId], onDelete: SetNull)
-  originator       User?            @relation(references: [id], fields: [originatorUserId], onDelete: SetNull)
-  documentNotices  DocumentNotice[]
+  id                   Int                    @id @default(autoincrement())
+  departmentId         Int?
+  originatorUserId     Int?
+  originatorName       String?
+  name                 String
+  seriesNumber         String                 @unique
+  externalUrl          String?                @unique
+  totalPages           Int?
+  sourceDocument       String
+  status               String                 @default("pending")
+  remarks              String?
+  effectivityDate      String?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  deletedAt            DateTime?
+  archivedAt           DateTime?
+  department           Department?            @relation(references: [id], fields: [departmentId], onDelete: SetNull)
+  originator           User?                  @relation(references: [id], fields: [originatorUserId], onDelete: SetNull)
+  documentNotices      DocumentNotice[]
+  DocumentNoticeComply DocumentNoticeComply[]
 }
 
 model DocumentNotice {
-  id               Int       @id @default(autoincrement())
-  revisionNumber   Int
+  id                   Int                    @id @default(autoincrement())
+  revisionNumber       Int
+  details              String
+  nature               String
+  pageNumber           String?
+  externalUrl          String?
+  approvalDate         String?
+  requestedBy          String?
+  approvedBy           String?
+  isComplied           Boolean                @default(false)
+  documentId           Int
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  deletedAt            DateTime?
+  document             Document               @relation(references: [id], fields: [documentId], onDelete: Cascade)
+  documentNoticeComply DocumentNoticeComply[]
+}
+
+model DocumentNoticeComply {
+  id               Int            @id @default(autoincrement())
   details          String
-  nature           String
   pageNumber       String?
   externalUrl      String?
-  complyForDetails String?
-  approvalDate     String?
   complyBy         String?
-  requestedBy      String?
-  approvedBy       String?
-  type             String
   documentId       Int
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  documentNoticeId Int
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
   deletedAt        DateTime?
-  document         Document  @relation(references: [id], fields: [documentId], onDelete: Cascade)
+  document         Document       @relation(references: [id], fields: [documentId], onDelete: Cascade)
+  documentNotice   DocumentNotice @relation(references: [id], fields: [documentNoticeId], onDelete: Cascade)
 }
