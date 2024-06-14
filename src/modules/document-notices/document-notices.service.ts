@@ -73,4 +73,17 @@ export class DocumentNoticesService {
 
     return documentNoticeComply;
   }
+
+  async updateDocumentNoticeComplyStatus(noticeComplyId: number, status: "approved" | "declined") {
+    const documentNoticeComply = await this.prismaService.documentNoticeComply.update({
+      where: {
+        id: noticeComplyId,
+      },
+      data: {
+        status,
+      },
+    });
+
+    return documentNoticeComply;
+  }
 }

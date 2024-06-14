@@ -58,11 +58,22 @@ export class DocumentNoticesController {
 
   @ApiResponse({
     status: 200,
-    description: "Successfully created document comply notice",
+    description: "Successfully approved document comply notice",
   })
-  @Patch("/:id/comply/update-status")
-  async updateDocumentComplyNoticeStatusHandler(@Param("id") id: number, @Res() response: Response) {
-    const data = await this.documentNoticesService.approveDocumentNotice(+id);
+  @Patch("comply-notice/:noticeComplyId/approve")
+  async approveDocumentComplyNoticeStatusHandler(@Param("noticeComplyId") noticeComplyId: number, @Res() response: Response) {
+    const data = await this.documentNoticesService.updateDocumentNoticeComplyStatus(+noticeComplyId, "approved");
+
+    return response.status(HttpStatus.OK).json(data);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: "Successfully declined document comply notice",
+  })
+  @Patch("comply-notice/:noticeComplyId/decline")
+  async declineDocumentComplyNoticeStatusHandler(@Param("noticeComplyId") noticeComplyId: number, @Res() response: Response) {
+    const data = await this.documentNoticesService.updateDocumentNoticeComplyStatus(+noticeComplyId, "declined");
 
     return response.status(HttpStatus.OK).json(data);
   }
