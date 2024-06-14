@@ -60,7 +60,7 @@ export class DocumentNoticesController {
     status: 200,
     description: "Successfully approved document comply notice",
   })
-  @Patch("comply-notice/:noticeComplyId/approve")
+  @Patch("comply-notice/:noticeComplyId/approved")
   async approveDocumentComplyNoticeStatusHandler(@Param("noticeComplyId") noticeComplyId: number, @Res() response: Response) {
     const data = await this.documentNoticesService.updateDocumentNoticeComplyStatus(+noticeComplyId, "approved");
 
@@ -71,7 +71,7 @@ export class DocumentNoticesController {
     status: 200,
     description: "Successfully declined document comply notice",
   })
-  @Patch("comply-notice/:noticeComplyId/decline")
+  @Patch("comply-notice/:noticeComplyId/declined")
   async declineDocumentComplyNoticeStatusHandler(@Param("noticeComplyId") noticeComplyId: number, @Res() response: Response) {
     const data = await this.documentNoticesService.updateDocumentNoticeComplyStatus(+noticeComplyId, "declined");
 
